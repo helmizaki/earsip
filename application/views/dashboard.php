@@ -125,6 +125,7 @@
 
     <script>
     $(function() {
+
         $("#example1").DataTable({
             "ajax": {
                 "url": "<?php echo base_url('Dashboard/get_data'); ?>", // Ganti dengan URL yang sesuai
