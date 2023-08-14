@@ -67,25 +67,29 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table id="dataTable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th><a href="javascript:pilihsemua()">Check All</a></th>
-                                <th>Nomor Perkara</th>
-                                <th>Tanggal Putusan</th>
-                                <th>Tanggal Minutasi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Table rows will be inserted here -->
-                        </tbody>
-                    </table>
+                    <form action="<?php echo base_url(); ?>register_c/validasi/register_validasi_putusan_simpan"
+                        method="post">
+                        <table id="dataTable" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><a href="javascript:pilihsemua()">Check All</a></th>
+                                    <th>Nomor Perkara</th>
+                                    <th>Tanggal Putusan</th>
+                                    <th>Tanggal Minutasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Table rows will be inserted here -->
+                            </tbody>
+                        </table>
+
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-primary" id="submit_minutasi">Simpan</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -190,10 +194,11 @@ function populateTable(data) {
     // Loop through the data array and create table rows
     $.each(data, function(index, item) {
         var row = '<tr>' +
-            '<td><input type="checkbox" name="perkara_id_putusan" value="' + item.perkara_id + '"></td>' +
-            '<td>' + item.nomor_perkara + '</td>' +
-            '<td>' + item.tanggal_putusan + '</td>' +
-            '<td>' + item.tanggal_minutasi + '</td>' +
+            '<td><input type="checkbox" class="checkbox_item" name="perkara_id_putusan" value="' + item
+            .perkara_id + '"></td>' +
+            '<td name="nomor_perkara">' + item.nomor_perkara + '</td>' +
+            '<td name="tanggal_putusan">' + item.tanggal_putusan + '</td>' +
+            '<td name="tanggal_minutasi">' + item.tanggal_minutasi + '</td>' +
             '</tr>';
 
         tableBody.append(row);
@@ -214,5 +219,54 @@ function pilihsemua() {
         perkara_id[b].checked = true;
 
     }
+}
+
+var submit_minutasi = document.getElementById("submit_minutasi");
+submit_minutasi.onclick = function() {
+    var selected_items = [];
+
+    $('.checkbox_item:checked').each(function() {
+        var perkara_id = $(this).val();
+        var nomor_perkara = $(this).closest('tr').find('td[name="nomor_perkara"]').text();
+        var tanggal_putusan = $(this).closest('tr').find('td[name="tanggal_putusan"]').text();
+        var tanggal_minutasi = $(this).closest('tr').find('td[name="tanggal_minutasi"]').text();
+        selected_items.push({
+            perkara_id: perkara_id,
+            nomor_perkara: nomor_perkara,
+            tanggal_putusan: tanggal_putusan,
+            tanggal_minutasi: tanggal_minutasi
+        });
+    });
+
+    if (selected_items.length > 0) {
+        $.ajax({
+            url: '<?php echo base_url("Minutasi/insertToDatabase"); ?>',
+            type: 'POST',
+            data: {
+                selected_items: selected_items
+            },
+            dataType: 'json',
+            success: function(response) {
+                for (var i = 0; i < response.length; i++) {
+                    var itemStatus = response[i];
+                    var perkara_id = itemStatus.perkara_id;
+                    var status = itemStatus.status;
+
+                    if (status === 'success') {
+                        console.log('Perkara ID ' + perkara_id + ' was inserted successfully.');
+                    } else if (status === 'exists') {
+                        console.log('Perkara ID ' + perkara_id + ' already exists.');
+                    }
+                }
+            },
+            error: function() {
+                console.log('Error occurred during AJAX request.');
+            }
+        });
+    } else {
+        alert('Tidak ada data yang dipilih.');
+    }
+
+
 }
 </script>

@@ -31,6 +31,29 @@ class Minutasi_mod extends CI_Model {
         
 
     }
+
+     public function insertSelected($item, $user_id) {
+        $data = [
+            'perkara_id' => $item['perkara_id'],
+            'nomor_perkara' => $item['nomor_perkara'],
+            'tanggal_putusan' => $item['tanggal_putusan'],
+            'tanggal_minutasi' => $item['tanggal_minutasi'],
+            'user_id' => $user_id,
+            'status'=>'1',
+            'tanggal_validasi' =>  date('Y-m-d H:i:s')
+
+           
+        ];
+
+        // Using INSERT IGNORE to avoid duplicates
+        $this->db->query("INSERT IGNORE INTO validasi_minutasi (perkara_id, nomor_perkara, tanggal_putusan, tanggal_minutasi, validasi_oleh, status, tanggal_validasi) VALUES (?, ?, ?, ?,?,?,?)", array($data['perkara_id'], $data['nomor_perkara'], $data['tanggal_putusan'], $data['tanggal_minutasi'],$data['user_id'],$data['status'],$data['tanggal_validasi']));
+    }
+
+    public function checkExistingData($item_id)
+    {
+         $query = $this->db->get_where('validasi_minutasi', ['perkara_id' => $item_id]);
+         return $query->row();
+    }
    
 
 }

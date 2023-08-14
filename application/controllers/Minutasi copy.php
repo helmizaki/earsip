@@ -54,29 +54,19 @@ class Minutasi extends CI_Controller {
             $selected_items= $this->input->post('selected_items');
 
             if (!empty($selected_items)) {
-				$response = [];
-
-				$user_id = $this->session->userdata('username');
-				
+				$sql = "INSERT IGNORE INTO validasi_minutasi (perkara_id, nomor_perkara, tanggal_putusan, tanggal_minutasi, tanggal_validasi) VALUES";
                 foreach ($selected_items as $item) {
-					$existingData = $this->Minutasi_mod->checkExistingData($item['perkara_id']);
+					
+					 $sql .= "(" . $this->db->escape($item['perkara_id']) . ", " . $this->db->escape($item['nomor_perkara']) . ", " . $this->db->escape($item['tanggal_putusan']) . ", "  . $this->db->escape($item['tanggal_minutasi']) . ", ". $this->db->escape(date('Y-m-d H:i:s')) . "), ";
 
-					if (!$existingData) {
-
-                    $this->Minutasi_mod->insertSelected($item,$user_id) ;
-					$response[] = ['perkara_id' => $item['perkara_id'], 'status' => 'success'];
-
-					}
-					else {
-						$response[] = ['perkara_id' => $item['perkara_id'], 'status' => 'exists'];
-						
-					}
                 }
-                echo json_encode($response);
+				$sql = rtrim($sql, ', '); // Remove trailing comma and space
+           		$this->db->query($sql);
+                echo json_encode(['success' => true]);
             } else {
-				echo json_encode(['success' => false]);
-                
+                echo json_encode(['success' => false]);
             }
+
         }
 	}
 
