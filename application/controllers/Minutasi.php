@@ -44,10 +44,24 @@ class Minutasi extends CI_Controller {
 
 
 		public function get_data() {
-        $data = $this->Minutasi_mod->get_data(); // Ganti dengan metode yang sesuai dari model Anda
+         $data = $this->Minutasi_mod->get_data();
+         $response_data = [];
 
-        echo json_encode($data);
+        foreach ($data as $row) {
+            $tanggal_minutasi = $row['tanggal_minutasi'];
+            $matched = $this->Minutasi_mod->check_matching_by_tanggal_minutasi($tanggal_minutasi);
+
+            $row['matched'] = $matched;
+            $response_data[] = $row;
+        }
+
+       // Send the JSON response with data and matched information
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['data' => $response_data]));
     }
+
+
 
 	public function insertToDatabase(){
 		if ($this->input->is_ajax_request()) {
@@ -64,11 +78,15 @@ class Minutasi extends CI_Controller {
 					if (!$existingData) {
 
                     $this->Minutasi_mod->insertSelected($item,$user_id) ;
-					$response[] = ['perkara_id' => $item['perkara_id'], 'status' => 'success'];
+
+					$response[] = ['nomor_perkara' => $item['nomor_perkara'], 'status' => 'success'];
+
+					$datadariselect= $this->Minutasi_mod->get_v_perkara($item);
+					$this->Minutasi_mod->insertkeberkas($datadariselect[0]);
 
 					}
 					else {
-						$response[] = ['perkara_id' => $item['perkara_id'], 'status' => 'exists'];
+						$response[] = ['nomor_perkara' => $item['nomor_perkara'], 'status' => 'exists'];
 						
 					}
                 }

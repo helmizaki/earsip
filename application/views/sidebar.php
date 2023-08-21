@@ -52,6 +52,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="<?php echo site_url('Dashboard') ?>">Dashboard </a></li>
+                    <li><a href="<?php echo site_url('Pinjam') ?>">Peminjaman Berkas </a></li>
 
                 </ul>
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
@@ -60,7 +61,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="<?php echo site_url('Minutasi') ?>">Minutasi</a></li>
-                    <li><a href="<?php echo site_url('Putusan') ?>">Putusan</a></li>
+                    <li><a href="<?php echo site_url('Berkas') ?>">Lacak Berkas</a></li>
 
                 </ul>
                 <?php } ?>

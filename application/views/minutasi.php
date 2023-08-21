@@ -1,4 +1,15 @@
 <div class="content-body">
+    <style>
+    .matched {
+        background-color: #c7e3c7;
+        /* Ganti dengan warna latar belakang yang diinginkan */
+    }
+
+    .unmatched {
+        background-color: #ffe6e6;
+        /* Ganti dengan warna latar belakang yang diinginkan */
+    }
+    </style>
     <!-- row -->
     <div class="container-fluid">
         <div class="row">
@@ -13,6 +24,7 @@
                             <th>Tanggal Putusan</th>
                             <th>Tanggal Minutasi</th>
                             <th>Detail</th>
+                            <th>Validasi</th>
                         </thead>
 
                     </table>
@@ -23,6 +35,10 @@
     </div>
 </div>
 <style>
+tr.unmatched {
+    background-color: #ffe6e6;
+}
+
 /* Gaya untuk modal */
 .modal-content {
     border-radius: 0;
@@ -98,13 +114,12 @@
 
 
 <script>
-$(function() {
-    $("#example1").DataTable({
-
+$(document).ready(function() {
+    $('#example1').DataTable({
         "ajax": {
-            "url": "<?php echo base_url('Minutasi/get_data'); ?>", // Ganti dengan URL yang sesuai
+            "url": "<?php echo base_url('Minutasi/get_data'); ?>",
             "type": "POST",
-            "dataSrc": ""
+            "dataSrc": "data"
         },
         "columns": [{
                 "targets": 0, // Kolom nomor urut
@@ -118,14 +133,17 @@ $(function() {
                 "render": function(data, type, row) {
                     // Ubah format tanggal dari "YYYY-MM-DD" menjadi "DD-MM-YYYY"
                     var dateObj = new Date(data);
-                    var formattedDate = (dateObj.getDate() < 10 ? '0' : '') + dateObj
+                    var formattedDate = (dateObj.getDate() < 10 ? '0' : '') +
+                        dateObj
                         .getDate() + '-' +
-                        (dateObj.getMonth() + 1 < 10 ? '0' : '') + (dateObj.getMonth() +
+                        (dateObj.getMonth() + 1 < 10 ? '0' : '') + (dateObj
+                            .getMonth() +
                             1) + '-' +
                         dateObj.getFullYear();
                     return formattedDate;
                 }
-            }, {
+            },
+            {
                 "data": "tanggal_minutasi",
                 "render": function(data, type, row) {
                     // Ubah format tanggal dari "YYYY-MM-DD" menjadi "DD-MM-YYYY"
@@ -133,9 +151,11 @@ $(function() {
                         return data;
                     } else {
                         var dateObj = new Date(data);
-                        var formattedDate = (dateObj.getDate() < 10 ? '0' : '') + dateObj
+                        var formattedDate = (dateObj.getDate() < 10 ? '0' : '') +
+                            dateObj
                             .getDate() + '-' +
-                            (dateObj.getMonth() + 1 < 10 ? '0' : '') + (dateObj.getMonth() +
+                            (dateObj.getMonth() + 1 < 10 ? '0' : '') + (dateObj
+                                .getMonth() +
                                 1) + '-' +
                             dateObj.getFullYear();
                         return formattedDate;
@@ -150,19 +170,36 @@ $(function() {
                     return '<center><button onclick="lihat_minutasi(this)" type="button" class="btn btn-primary btn-xs update"  value="' +
                         row.tanggal_putusan + '"> Detail</button> </center>';
                 }
+            }, {
+                "data": "matched", // Menggunakan kunci matched dari respons JSON
+                "render": function(data, type, row) {
+                    if (data) {
+                        return '<div class="status matched">Sudah Validasi</div>';
+                    } else {
+                        return '<div class="status unmatched">Belum validasi</div>';
+                    }
+                }
             }
-            // Tambahkan kolom lainnya di sini
         ],
         "responsive": true,
         "lengthChange": false,
-        "autoWidth": true,
+        "autoWidth": false,
         "order": [
             [0, "desc"]
         ],
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        "createdRow": function(row, data, dataIndex) {
+            if (data.matched) {
+                $(row).find('td:eq(4)').addClass(
+                    'matched'); // Ganti '4' dengan indeks kolom "matched"
+            } else {
+                $(row).find('td:eq(4)').addClass(
+                    'unmatched'); // Ganti '4' dengan indeks kolom "matched"
+            }
+        }
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
 });
+
 
 function lihat_minutasi2(objButton) {
     var x = document.getElementById("tombol").value;
@@ -194,7 +231,8 @@ function populateTable(data) {
     // Loop through the data array and create table rows
     $.each(data, function(index, item) {
         var row = '<tr>' +
-            '<td><input type="checkbox" class="checkbox_item" name="perkara_id_putusan" value="' + item
+            '<td><input type="checkbox" class="checkbox_item" name="perkara_id_putusan" value="' +
+            item
             .perkara_id + '"></td>' +
             '<td name="nomor_perkara">' + item.nomor_perkara + '</td>' +
             '<td name="tanggal_putusan">' + item.tanggal_putusan + '</td>' +
@@ -223,9 +261,13 @@ function pilihsemua() {
 
 var submit_minutasi = document.getElementById("submit_minutasi");
 submit_minutasi.onclick = function() {
+    var messageDisplayed = false; // Flag to track if the message has been displayed
+    var successMessages = [];
+    var existsMessages = [];
     var selected_items = [];
 
     $('.checkbox_item:checked').each(function() {
+
         var perkara_id = $(this).val();
         var nomor_perkara = $(this).closest('tr').find('td[name="nomor_perkara"]').text();
         var tanggal_putusan = $(this).closest('tr').find('td[name="tanggal_putusan"]').text();
@@ -249,14 +291,30 @@ submit_minutasi.onclick = function() {
             success: function(response) {
                 for (var i = 0; i < response.length; i++) {
                     var itemStatus = response[i];
-                    var perkara_id = itemStatus.perkara_id;
+                    var nomor_perkara = itemStatus.nomor_perkara;
                     var status = itemStatus.status;
 
                     if (status === 'success') {
-                        console.log('Perkara ID ' + perkara_id + ' was inserted successfully.');
+                        successMessages.push('Nomor Perkara ' + nomor_perkara +
+                            ' Berhasil di submit.');
                     } else if (status === 'exists') {
-                        console.log('Perkara ID ' + perkara_id + ' already exists.');
+                        existsMessages.push('Nomor Perkara ' + nomor_perkara +
+                            ' sudah pernah di minutasi.');
                     }
+                }
+                if (!messageDisplayed) {
+                    var finalMessage = "Data berhasil masuk !!!\n\n";
+                    if (successMessages.length > 0) {
+                        finalMessage += "Success:\n" + successMessages.join("\n") + "\n\n";
+                        location.reload();
+                    }
+                    if (existsMessages.length > 0) {
+                        finalMessage += "Exists:\n" + existsMessages.join("\n") + "\n\n";
+                        location.reload();
+                    }
+
+                    alert(finalMessage); // Display the combined message
+                    messageDisplayed = true; // Set the flag to true after displaying the message
                 }
             },
             error: function() {

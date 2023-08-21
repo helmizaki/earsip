@@ -12,6 +12,7 @@ class List_minutasi extends CI_Model {
 
     }
 
+
    
 
 }
