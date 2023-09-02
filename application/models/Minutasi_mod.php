@@ -33,7 +33,7 @@ WHERE b.`perkara_id` IS NULL AND a.`tanggal_bht` IS NULL GROUP BY a.`tanggal_put
     }
 
     public function check_matching_by_tanggal_minutasi($tanggal_minutasi) {
-        $this->db->where('tanggal_minutasi', $tanggal_minutasi);
+        $this->db->where('perkara_id', $tanggal_minutasi);
         $query = $this->db->get('validasi_minutasi');
 
         return $query->num_rows() > 0;

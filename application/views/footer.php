@@ -20,6 +20,8 @@
 <script src="<?php echo base_url()?>assets/plugins/dashboard/js/demo.js"></script>
 <script src="<?php echo base_url()?>assets/plugins/dashboard/js/styleSwitcher.js"></script>
 
+<script src="<?php echo base_url()?>assets/plugins/sweetalert2/sweetaler2.all.min.js"></script>
+
 
 <!-- Datatable -->
 <script src="<?php echo base_url()?>assets/plugins/dashboard/vendor/datatables/js/jquery.dataTables.min.js"></script>

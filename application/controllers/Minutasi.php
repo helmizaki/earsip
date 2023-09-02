@@ -49,10 +49,11 @@ class Minutasi extends CI_Controller {
 
         foreach ($data as $row) {
             $tanggal_minutasi = $row['tanggal_minutasi'];
-            $matched = $this->Minutasi_mod->check_matching_by_tanggal_minutasi($tanggal_minutasi);
-
-            $row['matched'] = $matched;
-            $response_data[] = $row;
+            //$matched = $this->Minutasi_mod->check_matching_by_tanggal_minutasi($tanggal_minutasi);
+			$comparison_status = $this->List_minutasi->compare_table_rows($tanggal_minutasi);
+            $row['matched'] = $comparison_status;
+			$response_data[] = $row;
+			
         }
 
        // Send the JSON response with data and matched information

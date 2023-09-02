@@ -1,13 +1,13 @@
 <div class="content-body">
     <style>
     .matched {
-        background-color: #c7e3c7;
-        /* Ganti dengan warna latar belakang yang diinginkan */
+        background-color: green;
+        color: white;
     }
 
     .unmatched {
-        background-color: #ffe6e6;
-        /* Ganti dengan warna latar belakang yang diinginkan */
+        background-color: red;
+        color: white;
     }
     </style>
     <!-- row -->
@@ -119,6 +119,7 @@ $(document).ready(function() {
         "ajax": {
             "url": "<?php echo base_url('Minutasi/get_data'); ?>",
             "type": "POST",
+            "dataType": "json",
             "dataSrc": "data"
         },
         "columns": [{
@@ -173,7 +174,7 @@ $(document).ready(function() {
             }, {
                 "data": "matched", // Menggunakan kunci matched dari respons JSON
                 "render": function(data, type, row) {
-                    if (data) {
+                    if (data == "matched") {
                         return '<div class="status matched">Sudah Validasi</div>';
                     } else {
                         return '<div class="status unmatched">Belum validasi</div>';
@@ -189,6 +190,7 @@ $(document).ready(function() {
         ],
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
         "createdRow": function(row, data, dataIndex) {
+            console.log('createdRow called for row ' + dataIndex);
             if (data.matched) {
                 $(row).find('td:eq(4)').addClass(
                     'matched'); // Ganti '4' dengan indeks kolom "matched"

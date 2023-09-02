@@ -30,6 +30,7 @@
     <link href="<?php echo base_url()?>assets/plugins/dashboard/vendor/datatables/css/jquery.dataTables.min.css"
         rel="stylesheet">
     <link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/sweetalert2/sweetalert2.css">
 
 </head>
 
