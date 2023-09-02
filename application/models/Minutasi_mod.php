@@ -46,11 +46,12 @@ WHERE b.`perkara_id` IS NULL AND a.`tanggal_bht` IS NULL GROUP BY a.`tanggal_put
             'nomor_perkara' => $item['nomor_perkara'],
             'tanggal_putusan' => $item['tanggal_putusan'],
             'tanggal_minutasi' => $item['tanggal_minutasi'],
+            'tanggal_masuk' => date('Y-m-d'),
             'user_id' => $user_id           
         ];
 
         // Using INSERT IGNORE to avoid duplicates
-        $this->db->query("INSERT IGNORE INTO validasi_minutasi (perkara_id, nomor_perkara, tanggal_putusan, tanggal_minutasi, validasi_oleh) VALUES (?, ?, ?, ?,?)", array($data['perkara_id'], $data['nomor_perkara'], $data['tanggal_putusan'], $data['tanggal_minutasi'],$data['user_id']));
+        $this->db->query("INSERT IGNORE INTO validasi_minutasi (perkara_id, nomor_perkara, tanggal_putusan, tanggal_minutasi,tanggal_masuk, validasi_oleh) VALUES (?, ?, ?, ?,?,?)", array($data['perkara_id'], $data['nomor_perkara'], $data['tanggal_putusan'], $data['tanggal_minutasi'],$data['tanggal_masuk'],$data['user_id']));
     }
 
     public function get_v_perkara($item){

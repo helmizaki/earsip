@@ -62,6 +62,7 @@
                 <ul aria-expanded="false">
                     <li><a href="<?php echo site_url('Minutasi') ?>">Minutasi</a></li>
                     <li><a href="<?php echo site_url('Berkas') ?>">Lacak Berkas</a></li>
+                    <li><a href="<?php echo site_url('LapMinutasi') ?>">Laporan Minutasi</a></li>
 
                 </ul>
                 <?php } ?>
