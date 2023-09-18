@@ -23,8 +23,9 @@
                             <th>Nomor</th>
                             <th>Tanggal Putusan</th>
                             <th>Tanggal Minutasi</th>
-                            <th>Detail</th>
+                            <th>Aksi</th>
                             <th>Validasi</th>
+                            <th>Cetak BAP</th>
                         </thead>
 
                     </table>
@@ -112,6 +113,44 @@ tr.unmatched {
 
 
 
+<!-- Cetak BAP -->
+<div class="modal fade" id="ModalBAP" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" id="modalDialog">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cetak BAP Penyerahan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <form>
+                        <table id="dataTableBAP" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th><a href="javascript:pilihsemua()">Check All</a></th>
+                                    <th>Nomor Perkara</th>
+                                    <th>Tanggal Putusan</th>
+                                    <th>Tanggal Minutasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Table rows will be inserted here -->
+                            </tbody>
+                        </table>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="cetak_BAP">Cetak</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 
 <script>
 $(document).ready(function() {
@@ -169,7 +208,7 @@ $(document).ready(function() {
                 "data": "tanggal_putusan",
                 "render": function(data, type, row) {
                     return '<center><button onclick="lihat_minutasi(this)" type="button" class="btn btn-primary btn-xs update"  value="' +
-                        row.tanggal_putusan + '"> Detail</button> </center>';
+                        row.tanggal_putusan + '"> Validasi</button> </center>';
                 }
             }, {
                 "data": "matched", // Menggunakan kunci matched dari respons JSON
@@ -180,7 +219,15 @@ $(document).ready(function() {
                         return '<div class="status unmatched">Belum validasi</div>';
                     }
                 }
+            },
+            {
+                "data": "tanggal_minutasi",
+                "render": function(data, type, row) {
+                    return '<center><button onclick="get_BAP(this)" type="button" class="btn btn-primary btn-xs update"  value="' +
+                        row.tanggal_minutasi + '"> Cetak</button> </center>';
+                }
             }
+
         ],
         "responsive": true,
         "lengthChange": false,
@@ -222,6 +269,45 @@ function lihat_minutasi(button) {
 
         }
     });
+
+}
+
+function get_BAP(button) {
+    var value = button.value;
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "<?php echo site_url('Minutasi/get_BAP'); ?>",
+        data: {
+            value: value
+        },
+        success: function(data) {
+            populateTableBAP(data);
+
+        }
+    });
+
+}
+
+function populateTableBAP(data) {
+    var tableBody = $("#dataTableBAP tbody");
+    tableBody.empty(); // Clear existing rows
+
+    // Loop through the data array and create table rows
+    $.each(data, function(index, item) {
+        var row = '<tr>' +
+            '<td><input type="checkbox" class="checkbox_item" name="perkara_id_putusan" value="' +
+            item
+            .perkara_id + '"></td>' +
+            '<td name="nomor_perkara">' + item.nomor_perkara + '</td>' +
+            '<td name="tanggal_putusan">' + item.tanggal_putusan + '</td>' +
+            '<td name="tanggal_minutasi">' + item.tanggal_minutasi + '</td>' +
+            '</tr>';
+
+        tableBody.append(row);
+
+    });
+    $('#ModalBAP').modal('show'); // Menampilkan modal
 
 }
 
@@ -327,6 +413,51 @@ submit_minutasi.onclick = function() {
         alert('Tidak ada data yang dipilih.');
     }
 
+
+}
+
+
+var cetak_BAP = document.getElementById("cetak_BAP");
+cetak_BAP.onclick = function() {
+
+    var selected_items = [];
+
+    $('.checkbox_item:checked').each(function() {
+
+        var perkara_id = $(this).val();
+        var nomor_perkara = $(this).closest('tr').find('td[name="nomor_perkara"]').text();
+        var tanggal_putusan = $(this).closest('tr').find('td[name="tanggal_putusan"]').text();
+        var tanggal_minutasi = $(this).closest('tr').find('td[name="tanggal_minutasi"]').text();
+        selected_items.push({
+            perkara_id: perkara_id,
+            nomor_perkara: nomor_perkara,
+            tanggal_putusan: tanggal_putusan,
+            tanggal_minutasi: tanggal_minutasi
+        });
+    });
+
+    if (selected_items.length > 0) {
+        $.ajax({
+            url: '<?php echo base_url("Minutasi/CetakKeWord"); ?>',
+            type: 'POST',
+            data: {
+                selected_items: selected_items
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Mengarahkan pengguna untuk mengunduh dokumen Word yang sudah jadi
+                    window.location.href = '<?php echo base_url("template/hasil.xlsx"); ?>';
+                } else {
+                    console.log('Gagal membuat dokumen Word.');
+                }
+
+            }
+        });
+
+    } else {
+        alert('Tidak ada data yang dipilih.');
+    }
 
 }
 </script>

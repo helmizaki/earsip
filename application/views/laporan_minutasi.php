@@ -1,28 +1,25 @@
           <!-- / .main-navbar -->
-          <div class="main-content-container container-fluid px-4">
+          <div class="content-body">
               <!-- Page Header -->
-              <div class="page-header row no-gutters py-4">
-                  <div class="col-sm-12 col-md-12 text-center">
-                      <!-- <span class="text-uppercase page-subtitle">Overview</span> -->
-                      <h3 class="page-title">Laporan Rekap Minutasi</h3>
-                      <h3 class="page-title">Pengadilan Agama Ngawi</h3>
-
-                      <br>
-                      <strong class="text-muted d-block mb-2">Tanggal Laporan</strong>
-                      <div class="form-row justify-content-center">
-                          <div class="form-group col-md-2">
-                              <input type="date" class="tanggal form-control is-valid" id="tgl_start"
-                                  value="<?php echo date('d/m/Y'); ?>">
-                          </div>
-                          <div class="form-group col-md-2">
-                              <input type="date" class="tanggal form-control is-valid" id="tgl_finish"
-                                  value="<?php echo date('d/m/Y'); ?>">
-                          </div>
-                          <div class="form-group col-md-1">
-                              <button type="button" class="mb-2 btn btn-success mr-2"
-                                  onclick="tampil_data()">Tampil</button>
-                          </div>
+              <div class="container-fluid">
+                  <div class="row justify-content-center">
+                      <h3 class="text-center">Laporan Rekap Minutasi Tenanan</h3>
+                      <h3 class="text-center">Pengadilan Agama Ngawi</h3>
+                      <div></div>
+                      <strong class="text-center">Tanggal Laporan</strong>
+                      <div class="form-group col-md-2">
+                          <input type="date" class="tanggal form-control " id="tgl_start"
+                              value="<?php echo date('d/m/Y'); ?>">
                       </div>
+                      <div class="form-group col-md-2">
+                          <input type="date" class="tanggal form-control " id="tgl_finish"
+                              value="<?php echo date('d/m/Y'); ?>">
+                      </div>
+                      <div class="form-group col-md-1">
+                          <button type="button" class="mb-2 btn btn-success mr-2"
+                              onclick="tampil_data()">Tampil</button>
+                      </div>
+
                       <div class="form-row justify-content-center">
 
                           <div class="form-group col-md-2">
@@ -31,23 +28,16 @@
                           </div>
 
                       </div>
+                      <div class="form-row justify-content-center">
+                          <div id="isi" class="row justify-content-center">
+                          </div>
+
+                      </div>
                   </div>
-              </div>
-              <!-- End Page Header -->
-              <div class="row">
-                  <div id="loading" style="display:none">
-                      <ul class="bokeh">
-                          <li></li>
-                          <li></li>
-                          <li></li>
-                      </ul>
-                      <h6 class="text-center">Sedang Proses...</h6>
-                  </div>
-              </div>
-              <div id="isi" class="row justify-content-center">
+
+
               </div>
 
-              <!-- End Default Light Table -->
 
           </div>
 

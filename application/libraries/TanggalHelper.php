@@ -2,44 +2,7 @@
 
 class TanggalHelper{
 	public function __construct(){
-		$this->mytanggal =& get_instance();
-		$this->mytanggal->load->model('default/tanggal','tanggal');
-    }
-
-    function getTanggalPutusan($idperkara){
-    	return $this->mytanggal->tanggal->getTanggalPutusan($idperkara);
-    }
-
-    function getIDAlurPerkara($idperkara){
-    	return $this->mytanggal->tanggal->getIDAlurPerkara($idperkara);
-    }
-
-    function getIDJenisPerkara($idperkara){
-    	return $this->mytanggal->tanggal->getIDAJenisPerkara($idperkara);
-    }
-
-    function getTanggalPendaftaran($idperkara){
-    	return $this->mytanggal->tanggal->getTanggalPendaftaran($idperkara);
-    }
-
-    function getTanggalPenetapanSidangPertama($idperkara){
-    	return $this->mytanggal->tanggal->getTanggalPenetapanSidangPertama($idperkara);
-    }
-
-    function getTanggalSidangPertama($idperkara){
-    	return $this->mytanggal->tanggal->getTanggalSidangPertama($idperkara);
-    }
-
-    function getNomorPerkara($idperkara){
-    	return $this->mytanggal->tanggal->getNomorPerkara($idperkara);
-    }
-
-    function getIDProsesTerakhir($idperkara){
-    	return $this->mytanggal->tanggal->getIDProsesTerakhir($idperkara);
-    }
-
-    function getPerkaraIdJuncto($idperkara){
-    	return $this->mytanggal->tanggal->getPerkaraJuncto($idperkara);
+		//parent::__construct();
     }
 
     function monthName($str){
@@ -214,5 +177,39 @@ class TanggalHelper{
 	 	$timediff = $time2 - $time1;
 	 	return floor($timediff);
 	}
+
+	function tanggal_indo($tanggal, $cetak_hari = false)
+{
+	$hari = array ( 1 =>    'Senin',
+				'Selasa',
+				'Rabu',
+				'Kamis',
+				'Jumat',
+				'Sabtu',
+				'Minggu'
+			);
+			
+	$bulan = array (1 =>   'Januari',
+				'Februari',
+				'Maret',
+				'April',
+				'Mei',
+				'Juni',
+				'Juli',
+				'Agustus',
+				'September',
+				'Oktober',
+				'November',
+				'Desember'
+			);
+	$split 	  = explode('-', $tanggal);
+	$tgl_indo = $split[2] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[0];
+	
+	if ($cetak_hari) {
+		$num = date('N', strtotime($tanggal));
+		return $hari[$num] . ', ' . $tgl_indo;
+	}
+	return $tgl_indo;
+}
 
 }

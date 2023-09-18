@@ -13,6 +13,15 @@ FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`validasi_minutasi` AS b ON a.`perka
 
     }
 
+    public function get_list_BAP($value) {
+                
+        $query = $this->db->query("SELECT a.`perkara_id`,a.`nomor_perkara`, a.`tanggal_putusan`, b.`tanggal_minutasi` 
+FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`validasi_minutasi` AS b ON a.`perkara_id` = b.`perkara_id` WHERE b.`tanggal_minutasi` = '".$value."' AND b.`perkara_id` IS NOT NULL ");        
+        return $query->result();
+        
+
+    }
+
 
     public function compare_table_rows($tanggal_minutasi) {
         $this->db2 = $this->load->database('dbsipp', TRUE);

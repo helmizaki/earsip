@@ -20,7 +20,7 @@
 <script src="<?php echo base_url()?>assets/plugins/dashboard/js/demo.js"></script>
 <script src="<?php echo base_url()?>assets/plugins/dashboard/js/styleSwitcher.js"></script>
 
-<script src="<?php echo base_url()?>assets/plugins/sweetalert2/sweetaler2.all.min.js"></script>
+<script src="<?php echo base_url()?>assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
 
 <!-- Datatable -->
@@ -31,6 +31,7 @@
 
 <script src="<?php echo base_url()?>assets/plugins/popper/popper.min.js"></script>
 <script src="<?php echo base_url()?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo base_url()?>assets/plugins/datefns/date-fns.js"></script>
 </body>
 
 </html>

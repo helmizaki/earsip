@@ -53,7 +53,7 @@
                 <ul aria-expanded="false">
                     <li><a href="<?php echo site_url('Dashboard') ?>">Dashboard </a></li>
                     <li><a href="<?php echo site_url('Pinjam') ?>">Peminjaman Berkas </a></li>
-
+                    <li><a href="<?php echo site_url('BukuNikah') ?>">Upload Buku Nikah</a></li>
                 </ul>
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-050-info"></i>
@@ -63,6 +63,7 @@
                     <li><a href="<?php echo site_url('Minutasi') ?>">Minutasi</a></li>
                     <li><a href="<?php echo site_url('Berkas') ?>">Lacak Berkas</a></li>
                     <li><a href="<?php echo site_url('LapMinutasi') ?>">Laporan Minutasi</a></li>
+                    <li><a href="<?php echo site_url('BAPPenyerahan') ?>">Berita Acara Penyerahan</a></li>
 
                 </ul>
                 <?php } ?>

@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+
 class Minutasi extends CI_Controller {
 
 	public function __construct(){
@@ -37,6 +39,16 @@ class Minutasi extends CI_Controller {
 
             
 			$data = $this->List_minutasi->get_list_minutasi($value); // Memanggil model untuk mengambil data dari database
+
+			echo json_encode($data); // Mengembalikan data dalam format JSON
+        }
+
+		public function get_BAP(){
+
+            $value = $this->input->post('value'); // Mendapatkan nilai dari tombol
+
+            
+			$data = $this->List_minutasi->get_list_BAP($value); // Memanggil model untuk mengambil data dari database
 
 			echo json_encode($data); // Mengembalikan data dalam format JSON
         }
@@ -97,6 +109,64 @@ class Minutasi extends CI_Controller {
                 
             }
         }
+	}
+
+	public function CetakKeWord(){
+        require APPPATH .'third_party/PhpExcel/PhpExcel.php';
+        
+
+		$selected_items= $this->input->post('selected_items');
+         // Panggil class PHPExcel nya
+        $objPHPExcel = new PHPExcel();
+		// Membaca file Excel yang sudah ada
+        $objPHPExcel = PHPExcel_IOFactory::load('template/konsep.xlsx');
+        $worksheet = $objPHPExcel->getActiveSheet();
+        
+        // Menggunakan variabel row untuk mengawasi baris saat mengisi data
+        $row = 17;
+        $no = 1;
+        // Mengatur format tanggal "d/m/Y" untuk kolom tanggal (kolom C)
+        $worksheet->getStyle('C')->getNumberFormat()->setFormatCode('dd/mm/yyyy');
+        $worksheet->getStyle('D')->getNumberFormat()->setFormatCode('dd/mm/yyyy');
+        foreach ($selected_items as $item) {
+        $worksheet->setCellValue('A' . $row, $no);
+        $worksheet->setCellValue('B' . $row, $item['nomor_perkara']);
+        // Mengganti format tanggal ke format Excel
+        $tgl_put = PHPExcel_Shared_Date::PHPToExcel(strtotime($item['tanggal_putusan']));
+        $worksheet->setCellValue('C' . $row, $tgl_put);
+        $tgl_min = PHPExcel_Shared_Date::PHPToExcel(strtotime($item['tanggal_minutasi']));
+        $worksheet->setCellValue('D' . $row, $tgl_min);
+
+        // Mengatur garis tepi untuk sel-sel B, C, dan D di baris saat ini
+    $cellRange = 'A' . $row . ':E' . $row;
+    $styleArray = array(
+        'borders' => array(
+            'allborders' => array(
+                'style' => PHPExcel_Style_Border::BORDER_THIN, // Ganti dengan style yang sesuai
+            ),
+        ),
+    );
+    $worksheet->getStyle($cellRange)->applyFromArray($styleArray);
+        // Anda dapat menambahkan lebih banyak kolom sesuai kebutuhan
+        $row++;
+        $no++;
+    }
+   
+        
+        $roww = $row+2;
+        $newrow = $roww+4;
+        $worksheet->setCellValue('A' . $roww, 'Panitera Muda Gugatan,');
+        $worksheet->getStyle('A' . $roww)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $worksheet->setCellValue('A' . $newrow, 'Hidayat Mursito,S.H.');
+        $worksheet->getStyle('A' . $newrow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+        $worksheet->setCellValue('D' . $roww, 'Panitera Muda Hukum,');
+        $worksheet->setCellValue('D' . $newrow, 'Lucky Aziz Hakim,S.H.I M.H.');       
+
+    
+
+       $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+       $objWriter->save('template/hasil.xlsx');
+
 	}
 
     
