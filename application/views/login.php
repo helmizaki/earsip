@@ -13,7 +13,10 @@
 <html>
 
 <head>
-    <title>Halaman Login</title>
+    <title>Halaman Login </title>
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="<?php echo base_url()?>assets/plugins/dashboard/images/icon.png">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
     body {
@@ -24,7 +27,8 @@
     }
 
     .form-signin {
-        max-width: 330px;
+        max-width: 430px;
+        min-height: 330px;
         padding: 15px;
         margin: 0 auto;
         background-color: rgba(255, 255, 255, 0.7);
@@ -53,35 +57,72 @@
         border-radius: 3px;
     }
     </style>
+    <style>
+    a:link {
+        text-decoration: none;
+    }
+
+    a:visited {
+        text-decoration: none;
+    }
+
+    a:active {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    input,
+    button,
+    select,
+    textarea {
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        text-align: inherit;
+    }
+    </style>
 </head>
 
 <body>
 
     <div class="container">
         <div class="form-signin">
-            <h2 class="form-signin-heading">Halaman Login</h2>
+            <h2 class="form-signin-heading">Halaman Login <br /> E-ARSIP</h2>
             <?php
-        // Tampilkan pesan error jika ada
-        if ($this->session->flashdata('error_msg')) {
-            echo '<div class="alert alert-danger">' . $this->session->flashdata('error_msg') . '</div>';
-        }
-        if ($this->session->flashdata('success_msg')) {
-            echo '<div class="alert alert-success">' . $this->session->flashdata('success_msg') . '</div>';
-        }
-        ?>
-
-            <?php echo form_open('login/process_login'); ?>
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-lg btn-primary btn-block">Login</button>
-            <?php echo form_close(); ?>
+		$attributes = array('name' => 'login', 'id' => 'login_frm');
+		echo form_open('login/validation_credential',$attributes);
+		echo "<table align=center border=0 cellpadding=10><tr align=center>";
+			echo "<td rowspan=2>
+			<img src='".base_url()."assets/plugins/dashboard/images/profile/pic1.png' alt='Mahkamah Agung'/ height='100px'>
+			</td><td valign='bottom' style='padding-bottom: 10px;'>";
+			$attributes = array('tabindex' => '1','class' => 'login', 'placeholder' => 'Username', 'name' => 'username','autofocus'   => 'autofocus', 'required'   => '');
+			echo form_input($attributes);
+			echo "</td>
+			<td rowspan=2 style='padding-left: 10px;'>";
+			$attributes = array('tabindex' => '3','class' => 'btn btn-primary', 'value' => 'Login');
+			echo form_submit($attributes);
+			echo "</td>";
+		echo "</tr> <tr align=center>";
+			echo "<td  valign='top'>";
+			$attributes = array('tabindex' => '2','class' => 'login', 'placeholder' => 'Password', 'name' => 'password','required'   => '');
+			echo form_password($attributes);
+			echo "</td>";
+		echo "</tr><tr>
+		<td colspan=3 align=center> ";
+						if($this->input->get('login')=='gagal'){
+						echo 'LOGIN GAGAL<br>Gunakan username dan password Aplikasi SIPP.';
+						} 						
+		echo "</td>
+		</tr>
+		</table>";?>
         </div>
+    </div>
+    <div style="position: fixed; bottom: 3px; right: 10px; font-size: 10px; color: green" align="center">
+        Copyright &copy; 2023<br><a href="http://pa-majene.go.id" style="color: green;" target="_blank">Tim IT
+            PA-NGAWI</a>
     </div>
 
 </body>

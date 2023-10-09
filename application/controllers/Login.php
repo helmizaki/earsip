@@ -5,42 +5,40 @@ class Login extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('login_model');
+        $this->load->model('login/validation_user');
         
     }
-    public function index (){
-if($this->session->userdata('is_logged_in') !=TRUE){
-            $this->load->view('login');
-        }else{
-            $url=base_url('dashboard');
-            redirect($url);
-        };
+    public function index ($err=FALSE){
+    if($err==FALSE){
+			$err = FALSE;
+		}else{
+			$err =TRUE;
+		}
+		if($this->session->userdata('is_logged_in')){
+					redirect('');
+			}else{
+				$this->doLogin($err);
+			}
     }
+
+    function doLogin($err=FALSE){
+		$data['error'] =$err;
+		$this->load->vars($data);
+		$this->load->view('login');
+	}
      
-	public function process_login() {
-        $username = $this->input->post('username');
-        $password = $this->input->post('password');
-
-        // Validasi user di database menggunakan model
-        
-        $user = $this->login_model->get_user($username, $password);
-
-        if ($user) {
-            // Jika user ditemukan, simpan data user ke session
-            $user_data = array(
-                'user_id' => $user->id,
-                'username' => $user->username,
-                'jabatan' => $user->jabatan,
-                'level' => $user->level,
-                'is_logged_in' => TRUE
-            );
-            $this->session->set_userdata($user_data);
-            // Redirect ke halaman dashboard
-            redirect('dashboard');
-        } else {
-            // Jika user tidak ditemukan, kembali ke halaman login dengan pesan error
-            $this->session->set_flashdata('error_msg', 'Username atau Password salah.');
-            //redirect('login');
-        }
+	public function validation_credential() {
+        $this->form_validation->set_rules('username','username','trim|required');
+		$this->form_validation->set_rules('password','password','trim|required');
+		if($this->form_validation->run()===TRUE){			
+			if($this->validation_user->validate()==TRUE){
+				redirect('Dashboard');
+			}else{
+				redirect('Dashboard?login=gagal');
+			}
+		}else{
+			redirect('Dashboard?login=gagal');
+		}
     }
 
     public function logout() {

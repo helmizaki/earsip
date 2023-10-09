@@ -6,11 +6,11 @@
         <ul class="metismenu" id="menu">
             <li class="dropdown header-profile">
                 <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
-                    <img src="<?php echo base_url()?>assets/plugins/dashboard/images/profile/pic1.jpg" width="20"
+                    <img src="<?php echo base_url()?>assets/plugins/dashboard/images/profile/pic1.png" width="20"
                         alt="">
                     <div class="header-info ms-3">
                         <span class="font-w600 ">Hi!! Selamat datang,<b>
-                                <?php echo $this->session->userdata('username'); ?></b></span>
+                                <?php echo $this->session->userdata('fullname'); ?></b></span>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -45,7 +45,7 @@
                     </a>
                 </div>
             </li>
-            <?php if($this->session->userdata('jabatan') =='administrator'){ ?>
+            <?php if($this->session->userdata('jabatan') !='administrator'){ ?>
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-025-dashboard"></i>
                     <span class="nav-text">ARSIP</span>
@@ -54,6 +54,7 @@
                     <li><a href="<?php echo site_url('Dashboard') ?>">Dashboard </a></li>
                     <li><a href="<?php echo site_url('Pinjam') ?>">Peminjaman Berkas </a></li>
                     <li><a href="<?php echo site_url('BukuNikah') ?>">Upload Buku Nikah</a></li>
+                    <li><a href="<?php echo site_url('LapArsip') ?>">Laporan Penataan Arsip</a></li>
                 </ul>
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-050-info"></i>
@@ -70,8 +71,8 @@
 
         </ul>
         <div class="copyright">
-            <p><strong>Dompet Payment Admin Dashboard</strong> © 2022 All Rights Reserved</p>
-            <p class="fs-12">Made with <span class="heart"></span> by DexignLab</p>
+            <p><strong>PENGADILAN AGAMA NGAWI</strong> © 2023 All Rights Reserved</p>
+            <p class="fs-12">Made with <span class="heart"></span> by IT PA NGAWI</p>
         </div>
     </div>
 </div>
