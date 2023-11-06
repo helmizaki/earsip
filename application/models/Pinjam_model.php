@@ -1,12 +1,15 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Pinjam_model extends CI_Model {
-    
-    public function get_data() {
+class Pinjam_model extends CI_Model
+{
+
+    public function get_data()
+    {
         $this->db2 = $this->load->database('dbsipp', TRUE);
-                
-        $query = $this->db2->query("SELECT a.`perkara_id`,a.`nomor_perkara`, a.`jenis_perkara_nama`, a.`tanggal_putusan`, CASE a.`status_putusan_id` 
+
+        $query = $this->db2->query(
+        "SELECT a.`perkara_id`,a.`nomor_perkara`, a.`jenis_perkara_nama`, a.`tanggal_putusan`, CASE a.`status_putusan_id` 
         WHEN 7 THEN 'Dicabut'
         WHEN 62 THEN 'Dikabulkan'
         WHEN 63 THEN 'Ditolak'
@@ -16,21 +19,20 @@ class Pinjam_model extends CI_Model {
         WHEN 67 THEN 'Dicabut'
         WHEN 85 THEN 'Perdamaian'
         WHEN 93 THEN 'Gugur' 
-        END AS status_putusan, b.`tanggal_pinjam`, b.`tanggal_kembali` FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`pinjam_berkas` AS b ON a.`perkara_id` = b.`perkara_id` WHERE a.`tanggal_putusan` IS NOT NULL");        
+        END AS status_putusan, b.`tanggal_pinjam`, b.`tanggal_kembali` FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`pinjam_berkas` AS b ON a.`perkara_id` = b.`perkara_id` WHERE a.`tanggal_putusan` IS NOT NULL");
         return $query->result();
-        
-
     }
 
-    public function get_kolom_pinjam($value){
-       // $this->db2 = $this->load->database('dbsipp', TRUE);
-                
-        $query = $this->db->query("SELECT a.`perkara_id`, a.`nomor_perkara`,b.`nama_peminjam`,b.`keperluan`, b.`tanggal_kembali`, b.`tanggal_pinjam` FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`pinjam_berkas` AS b ON a.`perkara_id` = b.`perkara_id` WHERE a.`perkara_id` = '".$value."' ");        
+    public function get_kolom_pinjam($value)
+    {
+        // $this->db2 = $this->load->database('dbsipp', TRUE);
+
+        $query = $this->db->query("SELECT a.`perkara_id`, a.`nomor_perkara`,b.`nama_peminjam`,b.`keperluan`, b.`tanggal_kembali`, b.`tanggal_pinjam` FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`pinjam_berkas` AS b ON a.`perkara_id` = b.`perkara_id` WHERE a.`perkara_id` = '" . $value . "' ");
         return $query->row();
-        
     }
 
-   public function simpan_pinjaman($data) {
+    public function simpan_pinjaman($data)
+    {
         $item = array(
             'perkara_id' => $data['perkara_id'],
             'nomor_perkara' => $data['nomor_perkara'],
@@ -53,13 +55,15 @@ class Pinjam_model extends CI_Model {
         return array('status' => 'success', 'message' => 'Data berhasil disimpan.');
     }
 
-    public function isDataExists($identifikasi) {
+    public function isDataExists($identifikasi)
+    {
         // Contoh: Cek apakah data dengan perkara_id tertentu sudah ada
         $query = $this->db->get_where('pinjam_berkas', $identifikasi);
         return $query->num_rows() > 0;
     }
 
-    public function update_pinjaman($identifikasi, $data) {
+    public function update_pinjaman($identifikasi, $data)
+    {
         // Contoh: Update data berdasarkan perkara_id
         $this->db->where($identifikasi);
         $is_updated = $this->db->update('pinjam_berkas', $data);
@@ -70,7 +74,4 @@ class Pinjam_model extends CI_Model {
             return array('status' => 'error', 'message' => 'Gagal memperbarui data.');
         }
     }
-
-   
-
 }

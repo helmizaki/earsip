@@ -1,9 +1,11 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Login_model extends CI_Model {
+class Login_model extends CI_Model
+{
 
-    public function get_user($username, $password) {
+    public function get_user($username, $password)
+    {
         // Gantilah 'nama_tabel_user' dengan nama tabel user Anda di database
         $this->db->where('username', $username);
         $this->db->where('password', md5($password));
@@ -15,5 +17,4 @@ class Login_model extends CI_Model {
             return false;
         }
     }
-
 }

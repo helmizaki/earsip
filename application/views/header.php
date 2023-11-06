@@ -19,17 +19,15 @@
     <title>E - ARSIP</title>
 
     <!-- FAVICONS ICON -->
-    <link rel="shortcut icon" type="image/png" href="<?php echo base_url()?>assets/plugins/dashboard/images/icon.png">
+    <link rel="shortcut icon" type="image/png" href="<?php echo base_url() ?>assets/plugins/dashboard/images/icon.png">
 
-    <link href="<?php echo base_url()?>assets/plugins/dashboard/vendor/jquery-nice-select/css/nice-select.css"
-        rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/dashboard/vendor/nouislider/nouislider.min.css">
+    <link href="<?php echo base_url() ?>assets/plugins/dashboard/vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/dashboard/vendor/nouislider/nouislider.min.css">
     <!-- Style css -->
-    <link href="<?php echo base_url()?>assets/plugins/dashboard/css/style.css" rel="stylesheet">
-    <link href="<?php echo base_url()?>assets/plugins/dashboard/vendor/datatables/css/jquery.dataTables.min.css"
-        rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo base_url()?>assets/plugins/sweetalert2/sweetalert2.css">
+    <link href="<?php echo base_url() ?>assets/plugins/dashboard/css/style.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/plugins/dashboard/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/sweetalert2/sweetalert2.css">
 
 </head>
 
@@ -66,7 +64,7 @@
         ***********************************-->
         <div class="nav-header">
             <a href="<?php echo site_url('Dashboard') ?>" class="brand-logo">
-                <img src="<?php echo base_url()?>assets/plugins/dashboard/images/icon.png" width="53" alt="">
+                <img src="<?php echo base_url() ?>assets/plugins/dashboard/images/icon.png" width="53" alt="">
                 <span class="brand-title"> E-ARSIP
 
                 </span>

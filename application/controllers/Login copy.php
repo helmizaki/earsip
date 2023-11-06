@@ -1,27 +1,30 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Login extends CI_Controller {
-    public function __construct() {
+class Login extends CI_Controller
+{
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('login_model');
-        
     }
-    public function index (){
-    if($this->session->userdata('is_logged_in') !=TRUE){
+    public function index()
+    {
+        if ($this->session->userdata('is_logged_in') != TRUE) {
             $this->load->view('login');
-        }else{
-            $url=base_url('dashboard');
+        } else {
+            $url = base_url('dashboard');
             redirect($url);
         };
     }
-     
-	public function process_login() {
+
+    public function process_login()
+    {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
         // Validasi user di database menggunakan model
-        
+
         $user = $this->login_model->get_user($username, $password);
 
         if ($user) {
@@ -43,7 +46,8 @@ class Login extends CI_Controller {
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         // Hapus data user dari session saat logout
         $this->session->unset_userdata('user_id');
         $this->session->unset_userdata('username');
