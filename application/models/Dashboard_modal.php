@@ -91,4 +91,28 @@ class Dashboard_modal extends CI_Model
 
         return array('status' => 'success', 'message' => 'Data berhasil disimpan.');
     }
+
+    public function data_laporan($tgl_start, $tgl_finish)
+    {
+        $query = $this->db->query("SELECT a.`nomor_perkara`,a.`tanggal_putusan`,a.`tanggal_minutasi`,a.`tanggal_masuk`, b.`jenis_perkara_nama`, c.`nama_gelar`, d.`nama`, e.`tanggal_box`, a.`tanggal_validasi`
+                                    FROM earsip.`validasi_minutasi` AS a 
+                                    LEFT JOIN sipp.`v_perkara` AS b ON a.`perkara_id` = b.`perkara_id`
+                                    LEFT JOIN sipp.`panitera_pn` AS c ON b.`panitera_pengganti_id` = c.`id`
+                                    LEFT JOIN sipp.`status_putusan` AS d ON d.`id` = b.`status_putusan_id` 
+                                    LEFT JOIN earsip.`box_real` AS e ON e.`perkara_id` = a.`perkara_id` 
+                                    WHERE e.`tanggal_box` >= '" . $tgl_start . "' AND e.`tanggal_box` <= '" . $tgl_finish . "'");
+
+        return $query->result();
+    }
+
+    public function get_list_arsip()
+    {
+        $this->db2 = $this->load->database('dbsipp', TRUE);
+
+        $query = $this->db2->query(
+            "SELECT a.`nomor_perkara`, a.`tanggal_putusan`, a.`tanggal_bht` FROM sipp.`v_perkara` AS a LEFT JOIN sipp.`arsip` AS b ON a.`perkara_id` = b.`perkara_id`
+WHERE b.`perkara_id` IS NULL AND a.`tanggal_pendaftaran` > '2020-12-31' AND a.`tanggal_putusan` IS NOT NULL"
+        );
+        return $query->result();
+    }
 }

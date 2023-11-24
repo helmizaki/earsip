@@ -51,7 +51,9 @@
                         <li><a href="<?php echo site_url('Dashboard') ?>">Dashboard </a></li>
                         <li><a href="<?php echo site_url('Pinjam') ?>">Peminjaman Berkas </a></li>
                         <li><a href="<?php echo site_url('BukuNikah') ?>">Upload Buku Nikah</a></li>
+                        <li><a href="<?php echo site_url('DaftarMinutasi') ?>">Daftar Validasi Minutasi</a></li>
                         <li><a href="<?php echo site_url('LapArsip') ?>">Laporan Penataan Arsip</a></li>
+                        <li><a href="<?php echo site_url('LapBOX') ?>">Rekap Perkara BOX</a></li>
                     </ul>
                 <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                         <i class="flaticon-050-info"></i>
@@ -62,8 +64,18 @@
                         <!-- <li><a href="<?php //echo site_url('SerahMinutasi') 
                                             ?>">Penyerahan Berkas PP ke PANMUD G/P</a></li>-->
                         <li><a href="<?php echo site_url('Berkas') ?>">Lacak Berkas</a></li>
-                        <li><a href="<?php echo site_url('LapMinutasi') ?>">Laporan Minutasi Panmud</a></li>
-                        <li><a href="<?php echo site_url('BAPPenyerahan') ?>">Berita Acara Penyerahan</a></li>
+                        <li><a href="<?php echo site_url('LapMinutasi') ?>">Rekap Minutasi</a></li>
+
+
+                    </ul>
+                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                        <i class="flaticon-381-settings"></i>
+
+                        <span class="nav-text">Setting</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="<?php echo site_url('User') ?>">User</a></li>
+
 
                     </ul>
                 <?php } ?>

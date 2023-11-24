@@ -28,6 +28,9 @@
 
 <!-- Datatable -->
 <script src="<?php echo base_url() ?>assets/plugins/dashboard/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url() ?>assets/plugins/dashboard/vendor/datatables/js/dataTables.buttons.min.js"></script>
+<script src="<?php echo base_url() ?>assets/plugins/dashboard/vendor/datatables/js/buttons.html5.min.js"></script>
+<script src="<?php echo base_url() ?>assets/plugins/dashboard/vendor/datatables/js/jszip.min.js"></script>
 <script src="<?php echo base_url() ?>assets/plugins/dashboard/js/plugins-init/datatables.init.js"></script>
 
 <!-- boostrap-->
@@ -35,6 +38,8 @@
 <script src="<?php echo base_url() ?>assets/plugins/popper/popper.min.js"></script>
 <script src="<?php echo base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="<?php echo base_url() ?>assets/plugins/datefns/date-fns.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
 </body>
 
 </html>

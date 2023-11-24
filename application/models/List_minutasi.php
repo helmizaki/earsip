@@ -32,10 +32,10 @@ FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`validasi_minutasi` AS b ON a.`perka
 
     public function compare_table_rows($tanggal_minutasi)
     {
-        $this->db2 = $this->load->database('dbsipp', TRUE);
+
         // Query SQL untuk menghitung jumlah baris pada tabel berdasarkan tanggal_minutasi
         $query = $this->db->query("SELECT COUNT(*) as total_rows FROM earsip.`validasi_minutasi` as a WHERE a.`tanggal_minutasi` = '" . $tanggal_minutasi . "'");
-        $query2 = $this->db2->query("SELECT COUNT(*) as total_rows FROM sipp.`v_perkara` as a WHERE a.`tanggal_minutasi` = '" . $tanggal_minutasi . "'");
+        $query2 = $this->db->query("SELECT COUNT(*) as total_rows FROM sipp.`v_perkara` as a WHERE a.`tanggal_putusan` = '" . $tanggal_minutasi . "'");
         $result = $query->row();
         $totala = $result->total_rows;
         $hasil = $query2->row();
@@ -49,5 +49,15 @@ FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`validasi_minutasi` AS b ON a.`perka
         }
 
         return $comparison_status;
+    }
+
+    public function hapus_validasi($perkaraId)
+    {
+        // Assuming your table is named 'your_table_name'
+        $this->db->where('perkara_id', $perkaraId);
+        $this->db->delete('validasi_minutasi');
+
+        // Check if the delete operation was successful
+        return $this->db->affected_rows() > 0;
     }
 }

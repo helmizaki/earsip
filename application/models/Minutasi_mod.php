@@ -28,9 +28,9 @@ class Minutasi_mod extends CI_Model
     {
         $this->db2 = $this->load->database('dbsipp', TRUE);
 
-        $query = $this->db2->query("SELECT a.`tanggal_putusan`, a.`tanggal_minutasi`
-FROM v_perkara AS a LEFT JOIN arsip AS b ON a.`perkara_id` = b.`perkara_id`
-WHERE b.`perkara_id` IS NULL AND a.`tanggal_bht` IS NULL GROUP BY a.`tanggal_putusan` ORDER BY a.`tanggal_putusan`");
+        $query = $this->db2->query("SELECT a.`tanggal_putusan`,  a.`tanggal_minutasi`
+FROM sipp.`v_perkara` AS a LEFT JOIN earsip.`validasi_minutasi` AS b ON a.`perkara_id` = b.`perkara_id`
+WHERE  a.`tanggal_putusan` > '2021-12-31' GROUP BY a.`tanggal_putusan` ORDER BY a.`tanggal_putusan`");
 
         return $query->result_array();
     }

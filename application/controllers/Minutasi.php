@@ -27,7 +27,9 @@ class Minutasi extends CI_Controller
     {
         $this->is_login();
         $this->load->model('minutasi_mod');
+        $this->load->model('Serah_Berkas_PPPANMUD_model');
         $data['list_minutasi'] = $this->minutasi_mod->minutasi_list();
+        $data['list_pp'] = $this->Serah_Berkas_PPPANMUD_model->data_pp();
         $this->load->view('header');
         $this->load->view('sidebar');
         $this->load->view('footer');
@@ -186,7 +188,8 @@ class Minutasi extends CI_Controller
 
         $worksheet->setCellValue('A4', $awalan);
 
-        $worksheet->setCellValue('B7', $pilihDari);
+        $worksheet->setCellValue('B6', $pilihDari);
+        $worksheet->setCellValue('B7', 'Panitera Pengganti');
 
         // Menggunakan variabel row untuk mengawasi baris saat mengisi data
         $row = 17;
@@ -249,31 +252,7 @@ class Minutasi extends CI_Controller
             }
         }
 
-        if ($pilihDari === 'Panmud Hukum') {
-            if (!empty($dataHukArray)) {
-                $worksheet->getStyle('B' . $newrow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-                $worksheet->setCellValue('B' . $roww, $dataHukArray[0]['jabatan']);
-                $worksheet->setCellValue('B' . $newrow, $dataHukArray[0]['nama']);
-                $worksheet->setCellValue('B6', $dataHukArray[0]['nama']);
-                $worksheet->setCellValue('B7', $dataHukArray[0]['jabatan']);
-            }
-        } elseif ($pilihDari === 'Panmud Gugatan') {
-            if (!empty($dataGutArray)) {
-                $worksheet->getStyle('B' . $newrow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-                $worksheet->setCellValue('B' . $roww, $dataGutArray[0]['jabatan']);
-                $worksheet->setCellValue('B' . $newrow, $dataGutArray[0]['nama']);
-                $worksheet->setCellValue('B6', $dataGutArray[0]['nama']);
-                $worksheet->setCellValue('B7', $dataGutArray[0]['jabatan']);
-            }
-        } elseif ($pilihDari === 'Panmud Permohonan') {
-            if (!empty($dataPerArray)) {
-                $worksheet->getStyle('B' . $newrow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-                $worksheet->setCellValue('B' . $roww, $dataPerArray[0]['jabatan']);
-                $worksheet->setCellValue('B' . $newrow, $dataPerArray[0]['nama']);
-                $worksheet->setCellValue('B6', $dataPerArray[0]['nama']);
-                $worksheet->setCellValue('B7', $dataPerArray[0]['jabatan']);
-            }
-        }
+       
 
 
 
@@ -286,6 +265,20 @@ class Minutasi extends CI_Controller
             'message' => 'File Excel berhasil dibuat.'
         );
         header('Content-Type: application/json');
+        echo json_encode($response);
+    }
+
+
+
+
+
+    public function hapusVD()
+    {
+        $perkaraId = $this->input->post('perkaraId');
+        $success  = $this->List_minutasi->hapus_validasi($perkaraId);
+
+        // Prepare the response
+        $response = array('success' => $success);
         echo json_encode($response);
     }
 }

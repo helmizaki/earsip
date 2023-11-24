@@ -228,138 +228,322 @@
 
 
 
+        <!-- Cetak Laporan -->
+        <div class="modal fade" id="ModalLaporan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" id="modalDialog">
+                <div class=" modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cetak Laporan Box</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row justify-content-center">
+                                <h3 class="text-center">Tanggal Box</h3>
+                                <div></div>
+                                <div></div>
+                                <div class="form-group col-md-2">
+                                    <input type="date" class="tanggal form-control " id="tgl_start" value="<?php echo date('d/m/Y'); ?>">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="date" class="tanggal form-control " id="tgl_finish" value="<?php echo date('d/m/Y'); ?>">
+                                </div>
 
-    </div>
+                                <div class="form-row justify-content-center">
 
-    <script>
-        $(function() {
 
-            $("#example1").DataTable({
-                "ajax": {
-                    "url": "<?php echo base_url('Dashboard/get_data'); ?>", // Ganti dengan URL yang sesuai
-                    "type": "POST",
-                    "dataSrc": ""
-                },
-                "columns": [{
-                        "data": "perkara_id"
+                                    <button id="cetak_btn" type="button" class="mb-2 btn btn-warning mr-2">Cetak</button>
+
+
+                                </div>
+                                <div class="form-row justify-content-center">
+                                    <div id="isi" class="row justify-content-center">
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Cetak Laporan -->
+        <div class="modal fade" id="List_arsip" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" id="modalDialog">
+                <div class=" modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Perkara belum alih media</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row justify-content-center">
+                                <div class="table-responsive">
+                                    <form>
+                                        <table id="datatableArsip" class="table table-bordered">
+                                            <thead>
+                                                <tr>
+
+                                                    <th>Nomor Perkara</th>
+                                                    <th>Tanggal Putus</th>
+                                                    <th>Tanggal BHT</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Table rows will be inserted here -->
+                                            </tbody>
+                                        </table>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        <script>
+            $(function() {
+
+                $("#example1").DataTable({
+                    dom: 'Bfrtip',
+                    "ajax": {
+                        "url": "<?php echo base_url('Dashboard/get_data'); ?>", // Ganti dengan URL yang sesuai
+                        "type": "POST",
+                        "dataSrc": ""
                     },
-                    {
-                        "data": "nomor_perkara",
-                        "render": function(data, type, row) {
-                            // Membuat button dengan event onclick yang memanggil fungsi pinjam_arsip()
-                            return '<center><button onclick="show_detail(this)" type="button" class="btn btn-primary btn-xs update " value="' +
-                                row.perkara_id + '">' +
-                                data + '</button></center>';
-                        }
+                    "columns": [{
+                            "data": "perkara_id"
+                        },
+                        {
+                            "data": "nomor_perkara",
+                            "render": function(data, type, row) {
+                                // Membuat button dengan event onclick yang memanggil fungsi pinjam_arsip()
+                                return '<center><button onclick="show_detail(this)" type="button" class="btn btn-primary btn-xs update " value="' +
+                                    row.perkara_id + '">' +
+                                    data + '</button></center>';
+                            }
 
-                    },
-                    {
-                        "data": "jenis_perkara_nama"
-                    },
-                    {
-                        "data": "nama"
-                    },
-                    {
-                        "data": "tanggal_masuk_arsip",
-                        "render": function(data, type, row) {
-                            // Ubah format tanggal dari "YYYY-MM-DD" menjadi "DD-MM-YYYY"
-                            var dateObj = new Date(data);
-                            var formattedDate = (dateObj.getDate() < 10 ? '0' : '') + dateObj
-                                .getDate() + '-' +
-                                (dateObj.getMonth() + 1 < 10 ? '0' : '') + (dateObj.getMonth() +
-                                    1) + '-' +
-                                dateObj.getFullYear();
+                        },
+                        {
+                            "data": "jenis_perkara_nama"
+                        },
+                        {
+                            "data": "nama"
+                        },
+                        {
+                            "data": "tanggal_masuk_arsip",
+                            "render": function(data, type, row) {
+                                // Ubah format tanggal dari "YYYY-MM-DD" menjadi "DD-MM-YYYY"
+                                var dateObj = new Date(data);
+                                var formattedDate = (dateObj.getDate() < 10 ? '0' : '') + dateObj
+                                    .getDate() + '-' +
+                                    (dateObj.getMonth() + 1 < 10 ? '0' : '') + (dateObj.getMonth() +
+                                        1) + '-' +
+                                    dateObj.getFullYear();
 
 
-                            // Tambahkan ikon centang hijau jika tanggal tidak kosong, dan silang merah jika kosong
-                            if (data) {
-                                return '<div class="text-success"><i class="fas fa-check-circle"></i> ' +
-                                    formattedDate + '</div>';
-                            } else {
-                                return '<div class="text-danger"><i class="fas fa-times-circle"></i> Belum Masuk </div>';
+                                // Tambahkan ikon centang hijau jika tanggal tidak kosong, dan silang merah jika kosong
+                                if (data) {
+                                    return '<div class="text-success"><i class="fas fa-check-circle"></i> ' +
+                                        formattedDate + '</div>';
+                                } else {
+                                    return '<div class="text-danger"><i class="fas fa-times-circle"></i> Belum Masuk </div>';
+                                }
+                            }
+                        },
+                        {
+                            "data": "tanggal_box",
+                            "render": function(data, type, row) {
+                                // Ubah format tanggal dari "YYYY-MM-DD" menjadi "DD-MM-YYYY"
+                                var dateObj = new Date(data);
+                                var formattedDate = (dateObj.getDate() < 10 ? '0' : '') + dateObj
+                                    .getDate() + '-' +
+                                    (dateObj.getMonth() + 1 < 10 ? '0' : '') + (dateObj.getMonth() +
+                                        1) + '-' +
+                                    dateObj.getFullYear();
+
+                                // Tambahkan ikon centang hijau jika tanggal tidak kosong, dan silang merah jika kosong
+                                if (data) {
+                                    return '<div class="text-success"><i class="fas fa-check-circle"></i> ' +
+                                        formattedDate + '</div>';
+                                } else {
+                                    return '<div class="text-danger"><i class="fas fa-times-circle"></i> Belum Masuk </div>';
+                                }
                             }
                         }
-                    },
-                    {
-                        "data": "tanggal_box",
-                        "render": function(data, type, row) {
-                            // Ubah format tanggal dari "YYYY-MM-DD" menjadi "DD-MM-YYYY"
-                            var dateObj = new Date(data);
-                            var formattedDate = (dateObj.getDate() < 10 ? '0' : '') + dateObj
-                                .getDate() + '-' +
-                                (dateObj.getMonth() + 1 < 10 ? '0' : '') + (dateObj.getMonth() +
-                                    1) + '-' +
-                                dateObj.getFullYear();
+                        // Tambahkan kolom lainnya di sini
+                    ],
+                    "responsive": true,
+                    "lengthChange": false,
+                    "autoWidth": true,
+                    "order": [
+                        [0, "desc"]
+                    ],
+                    "buttons": [{
+                        text: 'Perkara Belum Alih Media',
+                        action: function(e, dt, node, config) {
+                            showModal();
+                        }
+                    }]
+                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-                            // Tambahkan ikon centang hijau jika tanggal tidak kosong, dan silang merah jika kosong
-                            if (data) {
-                                return '<div class="text-success"><i class="fas fa-check-circle"></i> ' +
-                                    formattedDate + '</div>';
-                            } else {
-                                return '<div class="text-danger"><i class="fas fa-times-circle"></i> Belum Masuk </div>';
-                            }
+            });
+
+            function showModal() {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "<?php echo site_url('Dashboard/ListArsip'); ?>",
+                    success: function(data) {
+                        populateTable(data);
+
+                    }
+                });
+
+            }
+
+            function populateTable(data) {
+                var tableBody = $("#datatableArsip tbody");
+                tableBody.empty(); // Clear existing rows
+
+                // Loop through the data array and create table rows
+                $.each(data, function(index, item) {
+                    // Format tanggal ke ddmmyyyy atau isi dengan kosong jika tanggal kosong
+                    var tanggalPutusan = item.tanggal_putusan ? formatDate(item.tanggal_putusan) : 'Belum Putus';
+                    var tanggalBHT = item.tanggal_bht ? formatDate(item.tanggal_bht) : 'Belum BHT';
+
+                    var row = '<tr>' +
+                        '<td name="nomor_perkara">' + item.nomor_perkara + '</td>' +
+                        '<td name="tanggal_minutasi">' + tanggalPutusan + '</td>' +
+                        '<td name="pp">' + tanggalBHT + '</td>' +
+                        '</tr>';
+
+                    tableBody.append(row);
+
+                });
+                $('#List_arsip').modal('show'); // Menampilkan modal
+
+            }
+
+            // Fungsi untuk memformat tanggal ke ddmmyyyy
+            function formatDate(inputDate) {
+                var date = new Date(inputDate);
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+
+                // Padding satu digit dengan nol
+                day = day < 10 ? '0' + day : day;
+                month = month < 10 ? '0' + month : month;
+
+                return day + '-' + month + '-' + year;
+            }
+
+
+            function show_detail(button) {
+                var value = button.value;
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "<?php echo site_url('Dashboard/get_kolom'); ?>",
+                    data: {
+                        value: value
+                    },
+                    success: function(data) {
+                        $('#nomor_perkara').val(data.nomor_perkara);
+                        $('#perkara_id').val(data.perkara_id);
+                        $('#tanggal_putusan').val(data.tanggal_putusan);
+                        $('#nomor_akta_cerai').val(data.nomor_akta_cerai);
+
+                        $('#myModal').modal('show');
+                    }
+                });
+
+            }
+
+
+            var submit_box = document.getElementById("submit_box");
+            submit_box.onclick = function() {
+                var perkara_id = $("#perkara_id").val();
+                var tanggal_box = $("#tanggal_box").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "Dashboard/simpankedb",
+                    data: {
+                        perkara_id: perkara_id,
+                        tanggal_box: tanggal_box
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        console.log(response); // Periksa respons di konsol
+                        alert(response.message); // Menampilkan pesan dari respons
+                        if (response.status === 'success') {
+                            location.reload(); // Reload halaman jika berhasil disimpan
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error: " + error); // Menampilkan pesan error jika terjadi masalah pada AJAX
+                    }
+                });
+
+            }
+
+
+
+            var cetak_BAP = document.getElementById("cetak_btn");
+            cetak_BAP.onclick = function() {
+                var tgl_start = $('#tgl_start').val();
+                var tgl_finish = $('#tgl_finish').val();
+                $.ajax({
+                    url: "<?php echo base_url(); ?>Dashboard/cetak_laporan",
+                    type: "POST",
+                    data: {
+                        "tgl_start": tgl_start,
+                        "tgl_finish": tgl_finish
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            var downloadURL =
+                                '<?php echo base_url("template/box/laporan_box.xlsx"); ?>';
+                            var downloadLink = '<a href="' + downloadURL + '" target="_blank">Download</a>';
+
+                            Swal.fire({
+                                title: '<strong>Silahkan Di Download pada Link dibawah</strong>',
+                                icon: 'info',
+                                html: downloadLink,
+                                showCloseButton: true,
+                                showCancelButton: true,
+                                focusConfirm: false,
+                                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
+                                confirmButtonAriaLabel: 'Thumbs up, great!'
+                            });
+                        } else {
+                            // Jika respons bukan sukses, tangani sesuai kebutuhan Anda
+                            alert('Gagal membuat file Excel: ' + response.message);
                         }
                     }
-                    // Tambahkan kolom lainnya di sini
-                ],
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": true,
-                "order": [
-                    [0, "desc"]
-                ],
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                });
 
-        });
-
-
-        function show_detail(button) {
-            var value = button.value;
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "<?php echo site_url('Dashboard/get_kolom'); ?>",
-                data: {
-                    value: value
-                },
-                success: function(data) {
-                    $('#nomor_perkara').val(data.nomor_perkara);
-                    $('#perkara_id').val(data.perkara_id);
-                    $('#tanggal_putusan').val(data.tanggal_putusan);
-                    $('#nomor_akta_cerai').val(data.nomor_akta_cerai);
-
-                    $('#myModal').modal('show');
-                }
-            });
-
-        }
-
-
-        var submit_box = document.getElementById("submit_box");
-        submit_box.onclick = function() {
-            var perkara_id = $("#perkara_id").val();
-            var tanggal_box = $("#tanggal_box").val();
-
-            $.ajax({
-                type: "POST",
-                url: "Dashboard/simpankedb",
-                data: {
-                    perkara_id: perkara_id,
-                    tanggal_box: tanggal_box
-                },
-                dataType: "json",
-                success: function(response) {
-                    console.log(response); // Periksa respons di konsol
-                    alert(response.message); // Menampilkan pesan dari respons
-                    if (response.status === 'success') {
-                        location.reload(); // Reload halaman jika berhasil disimpan
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert("Error: " + error); // Menampilkan pesan error jika terjadi masalah pada AJAX
-                }
-            });
-
-        }
-    </script>
+            }
+        </script>

@@ -100,11 +100,14 @@ class LapMinutasi extends CI_Controller
 			$worksheet->setCellValue('C' . $row, $item->jenis_perkara_nama);
 			$worksheet->setCellValue('D' . $row, $item->nama_gelar);
 			$worksheet->setCellValue('E' . $row, $item->nama);
-			$tgl_min = PHPExcel_Shared_Date::PHPToExcel(strtotime($item->tanggal_minutasi));
-			$worksheet->setCellValue('F' . $row, $tgl_min);
+			$tgl_masuk = PHPExcel_Shared_Date::PHPToExcel(strtotime($item->tanggal_masuk));
+			$worksheet->setCellValue('F' . $row, $tgl_masuk);
+			$tgl_validasi = PHPExcel_Shared_Date::PHPToExcel(strtotime($item->tanggal_validasi));
+			$worksheet->setCellValue('G' . $row, $tgl_validasi);
+			$worksheet->setCellValue('H' . $row, $item->tanggal_box);
 
 			// Mengatur garis tepi untuk sel-sel B, C, dan D di baris saat ini
-			$cellRange = 'A' . $row . ':F' . $row;
+			$cellRange = 'A' . $row . ':H' . $row;
 			$styleArray = array(
 				'borders' => array(
 					'allborders' => array(

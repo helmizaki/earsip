@@ -3,7 +3,7 @@
               <!-- Page Header -->
               <div class="container-fluid">
                   <div class="row justify-content-center">
-                      <h3 class="text-center">REKAP VALIDASI MINUTASI </h3>
+                      <h3 class="text-center">REKAP BOX PERKARA </h3>
                       <h3 class="text-center">PENGADILAN AGAMA NGAWI</h3>
                       <div></div>
                       <strong class="text-center">Tanggal Laporan</strong>
@@ -47,7 +47,7 @@
                   $("#loading").show();
                   $('#isi').html("");
                   $.ajax({
-                      url: "<?php echo base_url(); ?>LapMinutasi/show_list",
+                      url: "<?php echo base_url(); ?>LapBOX/show_list",
                       type: "POST",
                       data: {
                           "tgl_start": tgl_start,
@@ -72,7 +72,7 @@
                   var tgl_start = $('#tgl_start').val();
                   var tgl_finish = $('#tgl_finish').val();
                   $.ajax({
-                      url: "<?php echo base_url(); ?>LapMinutasi/cetak_laporan",
+                      url: "<?php echo base_url(); ?>Dashboard/cetak_laporan",
                       type: "POST",
                       data: {
                           "tgl_start": tgl_start,
@@ -81,7 +81,7 @@
                       dataType: 'json',
                       success: function(response) {
                           if (response.success) {
-                              var downloadURL = '<?php echo base_url("template/laporan/laporan_minutasi.xlsx"); ?>';
+                              var downloadURL = '<?php echo base_url("template/box/laporan_box.xlsx"); ?>';
                               var downloadLink = '<a href="' + downloadURL + '" target="_blank">Download</a>';
 
                               Swal.fire({
